@@ -15,15 +15,15 @@ def get_monitor_proportions() -> tuple[int, int]:
 
 
 while True:
-    frames_left, frame = cap.read()
+    success, frame = cap.read()
 
-    if not frames_left:
+    if not success:
         break
 
-    window_x, window_y = get_monitor_proportions()
-    resized_frame      = cv2.resize(frame, (window_x, window_y))
+    proportions: tuple = get_monitor_proportions()
+    frame = cv2.resize(frame, proportions)
 
-    cv2.imshow(WINDOW_NAME, resized_frame)
+    cv2.imshow(WINDOW_NAME, frame)
     cv2.moveWindow(WINDOW_NAME, 0, 0)
 
     key = cv2.waitKey(10)
@@ -31,3 +31,7 @@ while True:
     ESC = 27
     if key == ESC:
         break
+
+
+cap.release()
+cv2.destroyAllWindows()
